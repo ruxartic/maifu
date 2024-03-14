@@ -25,17 +25,33 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return _buildBody(); // Remove Scaffold widget
-  }
+@override
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: AppBar(
+      title: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 60.0),
+        child: SearchBar(
+          hintText: 'Search...',
+          leading: const Icon(Icons.search),
+          onChanged: (value) {
+            // Implement search functionality here 
+          },
+        ),
+      ),
+      elevation: 0, // Remove app bar elevation
+    ),
+    body: _buildBody(),
+  );
+}
+
 
   Widget _buildBody() {
     if (_items.isEmpty) {
       return Center(child: CircularProgressIndicator());
     } else {
       return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 0.0,
           mainAxisSpacing: 0.0,

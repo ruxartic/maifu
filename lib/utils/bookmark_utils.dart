@@ -25,11 +25,15 @@ class BookmarkUtils {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> bookmarkStrings =
         (prefs.getStringList(_bookmarkKey) ?? []).toList();
-    bookmarkStrings.add('${bookmark['id']};${bookmark['name']};${bookmark['imageUrl']}');
-    await prefs.setStringList(_bookmarkKey, bookmarkStrings);
+    final String newBookmarkString =
+        '${bookmark['id']};${bookmark['name']};${bookmark['imageUrl']}';
+    if (!bookmarkStrings.contains(newBookmarkString)) {
+      bookmarkStrings.add(newBookmarkString);
+      await prefs.setStringList(_bookmarkKey, bookmarkStrings);
+    }
   }
 
-  static Future<void> removeBookmark(String id) async {
+  static Future<void> removeBookmark(int id) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String> bookmarkStrings =
         (prefs.getStringList(_bookmarkKey) ?? []).toList();

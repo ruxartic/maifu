@@ -23,6 +23,11 @@
             id = "ios";
             manager = "ios";
         }
+        {
+          id = "linux";
+          manager = "flutter";
+          command = ["flutter" "run" "--machine" "-d" "linux"];
+        }
     ];
   };
 }
