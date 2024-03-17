@@ -18,13 +18,16 @@ jobs:
         with:
           java-version: '17'
           cache: 'gradle'
+
       - name: flutter action  
-      - uses: subosito/flutter-action@v2
+        uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.13.4'
           channel: 'stable'
           cache: true
-      - run: flutter --version
+      
+      - name: flutter version
+        run: flutter --version
 
       # get packages
       - name: Get packages
