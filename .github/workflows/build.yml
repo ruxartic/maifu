@@ -50,5 +50,8 @@ jobs:
         with:
           artifacts: 'build/app/outputs/flutter-apk/*.apk'
           token: ${{ secrets.GITHUB_TOKEN }}
+          draft: false
+          prerelease: false
+          tag: ${{ github.ref }}
 
       
