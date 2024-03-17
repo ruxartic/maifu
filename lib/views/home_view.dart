@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:image_app/models/item.dart';
+import 'package:image_app/models/neko.dart';
 import 'package:image_app/utils/bookmark_utils.dart';
 import 'package:image_app/utils/download_utils.dart';
 import 'package:image_app/utils/share_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class HomeView extends StatelessWidget {
-  final Item item;
+  final NekosapiItem item;
 
   const HomeView({required this.item});
 

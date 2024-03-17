@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:image_app/models/item.dart'; // Import the Item model
+import 'package:image_app/models/neko.dart'; // Import the Item model
 import 'package:image_app/utils/api_service.dart'; // Import the ApiService
 import 'package:image_app/views/home_view.dart';
 
@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Item> _items = [];
+  List<NekosapiItem> _items = [];
 
   @override
   void initState() {
@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _fetchItems() async {
-    List<Item> items = await ApiService.fetchPopularItems();
+    List<NekosapiItem> items = await ApiService.fetchPopularItems();
     setState(() {
       _items = items;
     });
