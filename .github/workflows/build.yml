@@ -44,14 +44,12 @@ jobs:
 
       - run: flutter build appbundle
 
-      # release
-      - name: Release app
-        uses: ncipollo/release-action@v1
+      # upload
+      - name: Upload app
+        uses: actions/upload-artifact@v3
         with:
-          artifacts: 'build/app/outputs/flutter-apk/*.apk'
-          token: ${{ secrets.GITHUB_TOKEN }}
-          draft: false
-          prerelease: false
-          tag: ${{ github.ref }}
+          name: app
+          path: build/app/outputs/apk/release/*.apk
+
 
       
