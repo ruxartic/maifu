@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: 'Your App Name',
+      title: 'maifu',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: colorScheme,

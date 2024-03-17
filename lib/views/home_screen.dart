@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:image_app/models/neko.dart'; // Import the Item model
+import 'package:image_app/models/tag.dart'; // Import the Tag model
 import 'package:image_app/utils/api_service.dart'; // Import the ApiService
 import 'package:image_app/views/home_view.dart';
-
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,6 +11,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<NekosapiItem> _items = [];
+  List<Tag> _tags = [];
+  bool _showItems = true; // Variable to control whether to show items or tags
 
   @override
   void initState() {
@@ -25,28 +27,36 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-@override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 60.0),
-        child: SearchBar(
-          hintText: 'Search...',
-          leading: const Icon(Icons.search),
-          onChanged: (value) {
-            // Implement search functionality here 
-          },
+  Future<void> _searchTags(String query) async {
+    List<Tag> tags = await ApiService.searchTags(query);
+    setState(() {
+      _tags = tags;
+      _showItems = false; // Switch to showing tags
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 60.0),
+          child: SearchBar(
+            hintText: 'Search...',
+            leading: const Icon(Icons.search),
+            onChanged: (value) {
+              // Trigger search functionality
+              _searchTags(value);
+            },
+          ),
         ),
+        elevation: 0, // Remove app bar elevation
       ),
-      elevation: 0, // Remove app bar elevation
-    ),
-    body: _buildBody(),
-  );
-}
+      body: _showItems ? _buildItemsBody() : _buildTagsBody(),
+    );
+  }
 
-
-  Widget _buildBody() {
+  Widget _buildItemsBody() {
     if (_items.isEmpty) {
       return Center(child: CircularProgressIndicator());
     } else {
@@ -63,4 +73,30 @@ Widget build(BuildContext context) {
       );
     }
   }
+
+  Widget _buildTagsBody() {
+  if (_tags.isEmpty) {
+    return Center(child: Text('No tags found'));
+  } else {
+    return ListView.builder(
+      itemCount: _tags.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ListTile(
+          title: Text(_tags[index].name),
+          subtitle: Text(_tags[index].description),
+          onTap: () async {
+            // Handle tag selection
+            int tagId = _tags[index].id;
+            List<NekosapiItem> items = await ApiService.fetchImagesByTag(tagId);
+            setState(() {
+              _items = items;
+              _showItems = true; // Switch back to showing items
+            });
+          },
+        );
+      },
+    );
+  }
+}
+
 }
