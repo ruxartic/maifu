@@ -44,6 +44,14 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SearchBar(
             hintText: 'Search...',
             leading: const Icon(Icons.search),
+            trailing: [
+              IconButton(
+                icon: Icon(Icons.more_vert),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/settings');
+                },
+              ),
+            ],
             onChanged: (value) {
               // Trigger search functionality
               _searchTags(value);
@@ -52,7 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         elevation: 0, // Remove app bar elevation
       ),
-      body: _showItems ? _buildItemsBody() : _buildTagsBody(),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 20.0), // Add padding to the top
+        child: _showItems ? _buildItemsBody() : _buildTagsBody(),
+      ),
     );
   }
 
@@ -75,28 +86,28 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildTagsBody() {
-  if (_tags.isEmpty) {
-    return Center(child: Text('No tags found'));
-  } else {
-    return ListView.builder(
-      itemCount: _tags.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          title: Text(_tags[index].name),
-          subtitle: Text(_tags[index].description),
-          onTap: () async {
-            // Handle tag selection
-            int tagId = _tags[index].id;
-            List<NekosapiItem> items = await ApiService.fetchImagesByTag(tagId);
-            setState(() {
-              _items = items;
-              _showItems = true; // Switch back to showing items
-            });
-          },
-        );
-      },
-    );
+    if (_tags.isEmpty) {
+      return Center(child: Text('No tags found'));
+    } else {
+      return ListView.builder(
+        itemCount: _tags.length,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(_tags[index].name),
+            subtitle: Text(_tags[index].description),
+            onTap: () async {
+              // Handle tag selection
+              int tagId = _tags[index].id;
+              List<NekosapiItem> items =
+                  await ApiService.fetchImagesByTag(tagId);
+              setState(() {
+                _items = items;
+                _showItems = true; // Switch back to showing items
+              });
+            },
+          );
+        },
+      );
+    }
   }
-}
-
 }

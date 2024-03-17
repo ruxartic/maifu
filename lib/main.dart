@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:image_app/views/bottom_navigation_bar.dart';
 import 'package:image_app/views/bookmark_screen.dart'; // Import the BookmarkScreen widget
 import 'package:image_app/views/home_screen.dart'; // Import the HomeScreen widget
+import 'package:image_app/views/settings_screen.dart';
+import 'package:image_app/utils/settings_utils.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,8 +12,9 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _theme = SettingsUtils.getTheme();
     final ColorScheme colorScheme = ColorScheme.fromSeed(
-      brightness:  Brightness.dark,
+      brightness: _theme == "dark" ? Brightness.dark : Brightness.light,
       seedColor: Colors.indigo,
     );
 
@@ -23,6 +26,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: MainScreen(), // MainScreen will contain the bottom navigation bar
+      routes: {
+        '/settings': (context) => SettingsScreen(),
+      },
     );
   }
 }
@@ -38,7 +44,8 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _buildBody(), // Display the appropriate screen based on the current index
+      body:
+          _buildBody(), // Display the appropriate screen based on the current index
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {

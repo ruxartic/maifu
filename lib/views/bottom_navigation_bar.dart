@@ -13,6 +13,7 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return NavigationBar(
       selectedIndex: currentIndex,
+      // height: 60.0,
       onDestinationSelected: onTap,
       destinations: const [
         NavigationDestination(
